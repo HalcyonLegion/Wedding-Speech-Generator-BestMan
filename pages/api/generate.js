@@ -15,9 +15,9 @@ export default async function (req, res) {
     return;
   }
 
-  const { modifier, bmname, bridename, groomname, duration, modifier2, modifier3 } = req.body;
+  const { tone, bmname, reason, bridename, groomname, duration, modifier2, howmet, modifier3, wishes, advice } = req.body;
 
-  if (!modifier || !bmname || !bridename || !groomname || !duration || !modifier2 || !modifier3) {
+  if (!tone || !bmname || !reason || !bridename || !groomname || !duration || !modifier2 || !howmet || !modifier3 || !wishes || !advice) {
     res.status(400).json({
       error: {
         message: "Please enter all required inputs",
@@ -28,10 +28,11 @@ export default async function (req, res) {
 
   try {
     const completion = await openai.createCompletion({
-      model:"davinci:ft-personal:wedding-speech-generator-2023-02-04-16-34-03",
-      prompt: generatePrompt(modifier, bmname, bridename, groomname, duration, modifier2, modifier3),
+      model:"text-davinci-002",
+      prompt: generatePrompt(tone, bmname, reason, bridename, groomname, duration, modifier2, howmet, modifier3, wishes, advice),
       temperature: 0.8,
-      max_tokens: 1900,
+      max_tokens: 1500,
+      stop:["Cheers!"]
     });
     res.status(200).json({ result: completion.data.choices[0].text });
   } catch(error) {
@@ -50,16 +51,49 @@ export default async function (req, res) {
   }
 }
 
-function generatePrompt(modifier, bmname, bridename, groomname, duration, modifier2, modifier3) {
+function generatePrompt(tone, bmname, reason, bridename, groomname, duration, modifier2, howmet, modifier3, wishes, advice) {
   return `
-  Modifier: ${modifier}
-  BMname: ${bmname}
-  Bridename: ${bridename}
-  Groomname: ${groomname}
-  Duration: ${duration}
-  Modifier2: ${modifier2}
-  Modifier3: ${modifier3}
 
-  SPEECH OUTLINE:
+The Best Man will introduce himself with this: Hello everyone, my name is ${bmname} and I’ve got the honour today of being ${groomname}'s best man, which means that over the next five minutes I’ll be telling you about some of the many wonderful qualities that ${groomname} has. Or lying as it’s also known.
+
+Using British English, write an extremely long, highly detailed, ${tone} Wedding Speech to be given by the Groom's Best Man ${bmname}.
+The Best Man will explain ${reason} and his feelings about being Best Man.
+The Bride's name is ${bridename} and the Groom's Name is ${groomname}.
+The best man has known the Bride and Groom for ${duration} so he will tell a story about ${modifier2} as well as ${howmet}.
+The Speech Must include specific references to ${modifier3} and it must also include thanks to everybody who could be there and a nice comment about the Bridesmaids.
+Write out the entire Speech in Complete detail, be as ${tone} as possible throughout and end with a heartfelt toast to the newly-wed couple including ${wishes} and and these words of wisdom ${advice}
+
+The speech will end when the best man says "Cheers!"
+
+SPEECH OUTLINE:
 `;
 }
+
+
+// OR
+
+// "Good afternoon and thank you to the other speakers today for their brilliant speeches, thank you to ${groomname} and ${bridename} for allowing me to be the best man today and thank you to you for listening. It's an honour to stand here next to ${groomname} and say a few words."
+
+// OR
+
+// "Thank you, I'm the best man. But before I begin I'd like to say that this is not going to be one of those awful best man speeches where I destroy the groom's reputation with disgusting, detailed commentary on his exploits for the next ten minutes. I've rehearsed this many times and I can only get it to eight minutes."
+
+// Using British English, write an extremely long, highly detailed, ${tone} Wedding Speech to be given by the Groom's Best Man ${bmname}.
+
+// The Best Man will explain ${reason} and his feelings about being Best Man.
+// The Bride's name is ${bridename} and the Groom's Name is ${groomname}.
+// The best man has known the Bride and Groom for ${duration} so he will tell a story about ${modifier2} as well as ${howmet}.
+// The Speech Must include specific references to ${modifier3} and it must also include thanks to everybody who could be there and a nice comment about the Bridesmaids.
+// Write out the entire Speech in Complete detail, be as ${tone} as possible throughout and end with a heartfelt toast to the newly-wed couple including ${wishes} and and these words of wisdom ${advice}
+
+// Tone: ${tone}
+// BMname: ${bmname}
+// Reason: ${reason}
+// Bridename: ${bridename}
+// Groomname: ${groomname}
+// Duration: ${duration}
+// Modifier2: ${modifier2}
+// Howmet: ${howmet}
+// Modifier3: ${modifier3}
+// Wishes: ${wishes}
+// Advice: ${advice}

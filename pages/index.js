@@ -4,13 +4,18 @@ import { Fragment } from "react";
 import styles from "./index.module.css";
 
 export default function Home() {
-  const [modifier, setModifier] = useState("");
+  const [tone, setTone] = useState("");
   const [bmname, setBMname] = useState("");
+  const [intro, setIntro] = useState("");
+  const [reason, setReason] = useState("");
   const [bridename, setBridename] = useState("");
   const [groomname, setGroomname] = useState("");
   const [duration, setDuration] = useState("");
   const [modifier2, setModifier2] = useState("");
+  const [howmet, setHowmet] = useState("");
   const [modifier3, setModifier3] = useState("");
+  const [wishes, setWishes] = useState("");
+  const [advice, setAdvice] = useState("");
   const [result, setResult] = useState();
 
   async function onSubmit(event) {
@@ -22,13 +27,18 @@ export default function Home() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ 
-          modifier: modifier,
+          tone: tone,
           bmname: bmname,
+          intro: intro,
+          reason: reason,
           bridename: bridename,
           groomname: groomname,
           duration: duration,
+          howmet: howmet,
           modifier2: modifier2,
-          modifier3: modifier3
+          modifier3: modifier3,
+          wishes: wishes,
+          advice: advice,
         }),
       });
 
@@ -38,13 +48,18 @@ export default function Home() {
       }
 
       setResult(data.result);
-      setModifier("");
+      setTone("");
       setBMname("");
+      setIntro("");
+      setReason("");
       setBridename("");
       setGroomname("");
       setDuration("");
+      setHowmet("");
       setModifier2("");
       setModifier3("");
+      setWishes("");
+      setAdvice("");
     } catch(error) {
       // Consider implementing your own error handling logic here
       console.error(error);
@@ -65,10 +80,10 @@ export default function Home() {
         <form onSubmit={onSubmit}>
           <input
             type="text"
-            name="modifier"
-            placeholder="What is the Style of this Speech?"
-            value={modifier}
-            onChange={(e) => setModifier(e.target.value)}
+            name="tone"
+            placeholder="What is the Tone of this Speech?"
+            value={tone}
+            onChange={(e) => setTone(e.target.value)}
           />
           <input
             type="text"
@@ -76,6 +91,13 @@ export default function Home() {
             placeholder="What is the Best Man's Name?"
             value={bmname}
             onChange={(e) => setBMname(e.target.value)}
+          />
+          <input
+            type="text"
+            name="reason"
+            placeholder="Why were you chosen to be Best Man?"
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
           />
           <input
             type="text"
@@ -94,16 +116,23 @@ export default function Home() {
           <input
             type="text"
             name="duration"
-            placeholder="How long have they known the couple?"
+            placeholder="How long have you known the couple?"
             value={duration}
             onChange={(e) => setDuration(e.target.value)}
           />
            <input
             type="text"
             name="modifier2"
-            placeholder="What something general the Best man can talk about?"
+            placeholder="What's something general the Best man can talk about?"
             value={modifier2}
             onChange={(e) => setModifier2(e.target.value)}
+          />
+           <input
+            type="text"
+            name="howmet"
+            placeholder="How did the Bride and Groom meet?"
+            value={howmet}
+            onChange={(e) => setHowmet(e.target.value)}
           />
            <input
             type="text"
@@ -111,6 +140,20 @@ export default function Home() {
             placeholder="What is something really funny/embarassing that the best man can mention?"
             value={modifier3}
             onChange={(e) => setModifier3(e.target.value)}
+          />
+           <input
+            type="text"
+            name="wishes"
+            placeholder="Please enter any well wishes you have here"
+            value={wishes}
+            onChange={(e) => setWishes(e.target.value)}
+          />
+           <input
+            type="text"
+            name="advice"
+            placeholder="Please enter any advice you have here"
+            value={advice}
+            onChange={(e) => setAdvice(e.target.value)}
           />
           <input type="submit" value="Generate Speech" />
         </form>
