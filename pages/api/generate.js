@@ -28,7 +28,7 @@ export default async function (req, res) {
 
   try {
     const completion = await openai.createCompletion({
-      model:"text-davinci-002",
+      model:"text-davinci-003",
       prompt: generatePrompt(tone, bmname, reason, bridename, groomname, duration, modifier2, howmet, modifier3, wishes, advice),
       temperature: 0.8,
       max_tokens: 1500,
@@ -53,20 +53,30 @@ export default async function (req, res) {
 
 function generatePrompt(tone, bmname, reason, bridename, groomname, duration, modifier2, howmet, modifier3, wishes, advice) {
   return `
+  tone: ${tone}
+  BMname: ${bmname}
+  reason: ${reason}
+  bridename: ${bridename}
+  groomname: ${groomname}
+  duration: ${duration}
+  modifier2: ${modifier2}
+  howmet: ${howmet}
+  modifier3: ${modifier3}
+  wishes: ${wishes}
+  advice: ${advice}
 
-The Best Man will introduce himself with this: Hello everyone, my name is ${bmname} and I’ve got the honour today of being ${groomname}'s best man, which means that over the next five minutes I’ll be telling you about some of the many wonderful qualities that ${groomname} has. Or lying as it’s also known.
 
-Using British English, write an extremely long, highly detailed, ${tone} Wedding Speech to be given by the Groom's Best Man ${bmname}.
-The Best Man will explain ${reason} and his feelings about being Best Man.
-The Bride's name is ${bridename} and the Groom's Name is ${groomname}.
-The best man has known the Bride and Groom for ${duration} so he will tell a story about ${modifier2} as well as ${howmet}.
-The Speech Must include specific references to ${modifier3} and it must also include thanks to everybody who could be there and a nice comment about the Bridesmaids.
-Write out the entire Speech in Complete detail, be as ${tone} as possible throughout and end with a heartfelt toast to the newly-wed couple including ${wishes} and and these words of wisdom ${advice}
+  Using British English, write an extremely long, highly detailed Wedding Speech which is ${tone} to be given by the Groom's Best Man ${bmname}.
+  ${bmname} will introduce himself with this: Hello everyone, my name is ${bmname} and I’ve got the honour today of being ${groomname}'s best man, which means that over the next five minutes I’ll be telling you about some of the many wonderful qualities that ${groomname} has. Or lying as it’s also known.
 
-The speech will end when the best man says "Cheers!"
-
-SPEECH OUTLINE:
-`;
+  The Best Man will explain why he was chosen: ${reason}, and his feelings about being Best Man.
+  The Bride's name is ${bridename} and the Groom's Name is ${groomname}.
+  The best man has known the Bride and Groom for ${duration} so he will tell a story about ${modifier2} as well as a story about how the Bride and Groom met ${howmet}.
+  The Speech Must include specific references to this story: ${modifier3} and it must also include thanks to everybody who could be there and a nice comment about the Bridesmaids.
+  Write out the entire Speech in Complete detail, be as ${tone} as possible throughout and end with a heartfelt toast to the newly-wed couple including these wishes ${wishes} and and these words of wisdom ${advice}
+  The speech will end when the best man says "Cheers!"
+  
+  `;
 }
 
 
